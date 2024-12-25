@@ -13,6 +13,7 @@ class Core
         /* general */
         $this->addMenus();
         $this->addConstants();
+        $this->addMetaTags();
         $this->addFavicon();
         $this->removeEmojis();
         $this->enableSvgUpload();
@@ -810,6 +811,23 @@ $rand
     private function enableCustomEditorStyle()
     {
         add_editor_style();
+    }
+
+    private function addMetaTags() {
+        // add meta charset
+        add_action('wp_head', function () {
+            echo '<meta charset="' . get_bloginfo('charset') . '" />';
+        });
+
+        // add meta viewport
+        add_action('wp_head', function () {
+            echo '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />';
+        });
+
+        // disable automatic phone number links on ios
+        add_action('wp_head', function () {
+            echo '<meta name="format-detection" content="telephone=no" />';
+        });
     }
 
     private function addFavicon()
