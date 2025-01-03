@@ -1327,7 +1327,7 @@ $rand
                     function ($matches1) {
                         return '<code>' .
                             preg_replace_callback(
-                                '/^(\s+)/m',
+                                '/^( +)/m',
                                 function ($matches2) {
                                     return str_repeat('&nbsp;', strlen($matches2[1]));
                                 },
