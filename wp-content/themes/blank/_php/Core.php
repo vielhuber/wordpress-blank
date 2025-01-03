@@ -87,6 +87,7 @@ class Core
         $this->advancedCustomFieldsFlexibleContentPreview();
         $this->webPConverterAndCropThumbnailsFixPluginConflict();
         $this->autoClearCacheForWpFastestCache();
+        $this->fixLeadingCodeSpacesForWpFastestCache();
         $this->cropThumbnailsOnlyShowNeededSize();
         $this->cropThumbnailsEnableEverywhere();
         $this->blockListUpdaterModifySpamlist();
@@ -1311,6 +1312,35 @@ $rand
                 wp_schedule_event(strtotime(date('Y-m-d H:00:00', strtotime('now + 1 hour'))), $frequency, $task);
             }
         });
+    }
+
+    private function fixLeadingCodeSpacesForWpFastestCache()
+    {
+        add_filter(
+            'the_content',
+            function ($content) {
+                if (strpos($content, '<code>') === false) {
+                    return $content;
+                }
+                $content = preg_replace_callback(
+                    '/<code>(.*?)<\/code>/s',
+                    function ($matches1) {
+                        return '<code>' .
+                            preg_replace_callback(
+                                '/^(\s+)/m',
+                                function ($matches2) {
+                                    return str_repeat('&nbsp;', strlen($matches2[1]));
+                                },
+                                $matches1[1]
+                            ) .
+                            '</code>';
+                    },
+                    $content
+                );
+                return $content;
+            },
+            0
+        );
     }
 
     private static function yoastShowEmptyCategoriesInSitemap()
