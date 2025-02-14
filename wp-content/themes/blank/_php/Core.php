@@ -985,6 +985,10 @@ $rand
     private function removeWordPressVersionInHead()
     {
         remove_action('wp_head', 'wp_generator');
+        add_filter('get_the_generator_xml', '__return_empty_string');
+        add_filter('get_the_generator_atom', '__return_empty_string');
+        add_filter('get_the_generator_rss2', '__return_empty_string');
+        add_filter('get_the_generator_rdf', '__return_empty_string');
     }
 
     private function disableWpCors()
