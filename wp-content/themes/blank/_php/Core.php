@@ -511,6 +511,7 @@ $rand
 
     private function disableGlobalGutenbergStylesInFrontend()
     {
+        add_filter('wp_img_tag_add_auto_sizes', '__return_false');
         add_action('wp_enqueue_scripts', function () {
             wp_dequeue_style('global-styles');
         });
