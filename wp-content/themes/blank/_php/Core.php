@@ -818,17 +818,17 @@ $rand
         // add meta charset
         add_action('wp_head', function () {
             echo '<meta charset="' . get_bloginfo('charset') . '" />';
-        });
+        }, -999);
 
         // add meta viewport
         add_action('wp_head', function () {
             echo '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />';
-        });
+        }, -999);
 
         // disable automatic phone number links on ios
         add_action('wp_head', function () {
             echo '<meta name="format-detection" content="telephone=no" />';
-        });
+        }, -999);
     }
 
     private function addFavicon()
