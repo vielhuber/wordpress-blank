@@ -17,6 +17,7 @@ class Core
         $this->addFavicon();
         $this->removeEmojis();
         $this->enableSvgUpload();
+        $this->setPhpErrorReporting();
         $this->removeAllDashboardWidgets();
         $this->detectPageSpeedInsights();
         $this->removeBulkHeaderLinksAndOembed();
@@ -1258,6 +1259,25 @@ $rand
             10,
             4
         );
+    }
+
+    private function setPhpErrorReporting() {
+        if (self::isProduction()) {
+            ini_set('display_errors', 1);
+            error_reporting(E_ERROR | E_PARSE);
+        }
+        else {
+            ini_set('display_errors', 1);
+            error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED);
+            // die on every error
+            set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+                // skip @
+                if (!(error_reporting() & $errno)) {
+                    return false;
+                }
+                die('Fatal Error: ' . $errstr . ' in ' . $errfile . ' on line ' . $errline);
+            });
+        }
     }
 
     private function enableMediaReplaceDisableOption()
