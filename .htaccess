@@ -33,7 +33,7 @@ RewriteRule ^(.*)$ wp-content/themes/blank/pagespeed.php?path=$1 [L,QSA]
 # password on testing
 <IfModule !mod_win32.c>
 <If "%{REQUEST_METHOD} != 'OPTIONS'">
-SetEnvIf HOST "close2dev\.de" protected
+SetEnvIf HOST "testing-tld\.de" protected
 #SetEnvIf Request_URI "wp-json" !protected
 # allow wordfence
 SetEnvIf Remote_Addr "^44\.239\.130\.172$" !protected
@@ -49,7 +49,7 @@ SetEnvIf Cookie "access_token" !protected
 Order Allow,Deny
 AuthType Basic
 AuthName "Interner Bereich"
-AuthUserFile /www/htdocs/xxxxxxxx/xxx.close2dev.de/.htpasswd
+AuthUserFile /www/htdocs/xxxxxxxx/xxx.testing-tld.de/.htpasswd
 AuthGroupFile /dev/null
 require valid-user
 Allow from all
@@ -120,7 +120,7 @@ RewriteRule ^ /? [L,R=301]
 RewriteEngine On
 RewriteCond %{HTTP_HOST} !\.local$ [NC]
 RewriteCond %{HTTP_HOST} !\.xip\.io$ [NC]
-RewriteCond %{HTTP_HOST} !\.close2dev\.de$ [NC]
+RewriteCond %{HTTP_HOST} !\.vielhuber\.dev$ [NC]
 RewriteCond %{HTTP_HOST} !\.vielhuber\.de$ [NC]
 RewriteCond %{HTTPS} !=on [NC]
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
@@ -128,7 +128,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 RewriteEngine On
 RewriteCond %{HTTP_HOST} !\.local$ [NC]
 RewriteCond %{HTTP_HOST} !\.xip\.io$ [NC]
-RewriteCond %{HTTP_HOST} !\.close2dev\.de$ [NC]
+RewriteCond %{HTTP_HOST} !\.vielhuber\.dev$ [NC]
 RewriteCond %{HTTP_HOST} !\.vielhuber\.de$ [NC]
 RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
 RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
@@ -136,7 +136,7 @@ RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 #RewriteEngine On
 #RewriteCond %{HTTP_HOST} !\.local$ [NC]
 #RewriteCond %{HTTP_HOST} !\.xip\.io$ [NC]
-#RewriteCond %{HTTP_HOST} !\.close2dev\.de$ [NC]
+#RewriteCond %{HTTP_HOST} !\.vielhuber\.dev$ [NC]
 #RewriteCond %{HTTP_HOST} !\.vielhuber\.de$ [NC]
 #RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 #RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
