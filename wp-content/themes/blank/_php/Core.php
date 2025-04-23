@@ -101,7 +101,7 @@ class Core
     public static function isProduction()
     {
         return strpos($_SERVER['HTTP_HOST'], '.local') === false &&
-            strpos($_SERVER['HTTP_HOST'], 'close2dev') === false &&
+            strpos($_SERVER['HTTP_HOST'], '.dev') === false &&
             strpos($_SERVER['HTTP_HOST'], '192.168.178') === false;
     }
 
