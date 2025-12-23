@@ -22,6 +22,7 @@ class Core
         $this->detectPageSpeedInsights();
         $this->removeBulkHeaderLinksAndOembed();
         $this->alwaysEnableShowHiddenCharactersInTinyMce();
+        $this->disableEmailForUpdates();
         $this->disableEmailBugAlerts();
         $this->sendMailsNotOnProductionToDeveloper();
         $this->removePrivacyPolicyLinkFromLogin();
@@ -137,30 +138,30 @@ ___________________\\///_____\\///////////////__',
 ➖➖➖➖➖🟩🟩➖🟩🟩🟩🟩🟩🟩➖
 ➖➖➖➖➖🟩🟩➖🟩🟩🟩🟩🟩🟩➖
 ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖',
-            '██╗  ██╗██████╗ 
+            '██╗  ██╗██████╗
 ██║  ██║╚════██╗
 ███████║ █████╔╝
-╚════██║██╔═══╝ 
+╚════██║██╔═══╝
      ██║███████╗
      ╚═╝╚══════╝',
-            '                      
-  _/  _/      _/_/    
- _/  _/    _/    _/   
-_/_/_/_/      _/      
-   _/      _/         
-  _/    _/_/_/_/      
+            '
+  _/  _/      _/_/
+ _/  _/    _/    _/
+_/_/_/_/      _/
+   _/      _/
+  _/    _/_/_/_/
                       ',
-            '       _              _       
-   _  /\ \          /\ \      
-  /\_\\ \ \        /  \ \     
- / / / \ \ \      / /\ \ \    
-/ / /   \ \ \     \/_/\ \ \   
-\ \ \____\ \ \        / / /   
- \ \________\ \      / / /    
-  \/________/\ \    / / /  _  
-            \ \ \  / / /_/\_\ 
-             \ \_\/ /_____/ / 
-              \/_/\________/  
+            '       _              _
+   _  /\ \          /\ \
+  /\_\\ \ \        /  \ \
+ / / / \ \ \      / /\ \ \
+/ / /   \ \ \     \/_/\ \ \
+\ \ \____\ \ \        / / /
+ \ \________\ \      / / /
+  \/________/\ \    / / /  _
+            \ \ \  / / /_/\_\
+             \ \_\/ /_____/ /
+              \/_/\________/
                               '
         ];
         $rand = $rand[mt_rand(0, count($rand) - 1)];
@@ -300,6 +301,13 @@ $rand
             10,
             2
         );
+    }
+
+    private function disableEmailForUpdates()
+    {
+        add_filter( 'auto_core_update_send_email', '__return_false' );
+        add_filter( 'auto_plugin_update_send_email', '__return_false' );
+        add_filter( 'auto_theme_update_send_email', '__return_false' );
     }
 
     private function sendMailsNotOnProductionToDeveloper()
@@ -608,9 +616,9 @@ $rand
                         });
                         // show elements above the fold before js init
                         let slider = document.querySelector(\'.intro-slider\');
-                        if( slider !== null ) { slider.style.opacity = 1; }  
+                        if( slider !== null ) { slider.style.opacity = 1; }
                         // mobile
-                        if( window.innerWidth < 700 ) {         
+                        if( window.innerWidth < 700 ) {
                             document.querySelectorAll(\'.duration-500\').forEach($el => {
                                 $el.style.transition = \'none\';
                             });
@@ -770,7 +778,7 @@ $rand
                             }
                             // support for repeater tables
                             else if(
-                                e.target.closest('.acf-field-image').getAttribute('data-key') !== null && 
+                                e.target.closest('.acf-field-image').getAttribute('data-key') !== null &&
                                 document.querySelector('.acf-th[data-key="'+e.target.closest('.acf-field-image').getAttribute('data-key')+'"] .description') !== null
                             ) {
                                 size = document.querySelector('.acf-th[data-key="'+e.target.closest('.acf-field-image').getAttribute('data-key')+'"] .description').innerText;
