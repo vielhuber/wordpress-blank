@@ -22,8 +22,8 @@ class Core
         $this->detectPageSpeedInsights();
         $this->removeBulkHeaderLinksAndOembed();
         $this->alwaysEnableShowHiddenCharactersInTinyMce();
-        $this->disableEmailForUpdates();
         $this->disableEmailBugAlerts();
+        $this->disableEmailForUpdates();
         $this->sendMailsNotOnProductionToDeveloper();
         $this->removePrivacyPolicyLinkFromLogin();
         $this->resetWordPressLoginFormLayout();
