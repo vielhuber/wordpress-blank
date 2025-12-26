@@ -19,6 +19,7 @@ class Core
         $this->enableSvgUpload();
         $this->setPhpErrorReporting();
         $this->removeAllDashboardWidgets();
+        $this->setZoomFactor();
         $this->detectPageSpeedInsights();
         $this->removeBulkHeaderLinksAndOembed();
         $this->alwaysEnableShowHiddenCharactersInTinyMce();
@@ -201,6 +202,21 @@ $rand
                 die();
             }
         }
+    }
+
+    private function setZoomFactor()
+    {
+        add_action(
+            'wp_head',
+            function () {
+                ?><script>
+                    let setZoomFactor = () => { document.documentElement.style.setProperty( '--zoom-factor', Math.round((window.screen.width / window.innerWidth) * 100) / 100 ); };
+                    setZoomFactor();
+                    window.addEventListener('resize', setZoomFactor);
+                </script><?php
+            },
+            -9999
+        );
     }
 
     private function detectPageSpeedInsights()
