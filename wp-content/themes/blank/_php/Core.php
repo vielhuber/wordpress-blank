@@ -590,7 +590,7 @@ $rand
             ]); ?>
             </script>
             <?php
-        });
+        }, -999);
     }
 
     private function loadJsBasicWithLocalize()
