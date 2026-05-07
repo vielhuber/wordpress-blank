@@ -224,7 +224,18 @@ $rand
         add_action(
             'wp_head',
             function () {
-                echo '<script>window.pagespeed = /Lighthouse|HeadlessChrome|Chrome-Lighthouse|Speed Insights|PTST|PageSpeed/i.test(navigator.userAgent || \'\') || !!navigator.webdriver;</script>';
+                echo '<script>(function(){var ua=navigator.userAgent||\'\';var s=0;' .
+                    'if(/Lighthouse|HeadlessChrome|Chrome-Lighthouse|Speed Insights|PTST|PageSpeed/i.test(ua))s=99;' .
+                    'if(navigator.webdriver)s=99;' .
+                    'if(!navigator.languages||navigator.languages.length===0)s+=3;' .
+                    'if(/Chrome\/\d{3}\.0\.0\.0/i.test(ua))s+=1;' .
+                    'var w=window.innerWidth,h=window.innerHeight;' .
+                    'if((w===1350&&h===940)||(w===412&&(h===823||h===915))||(w===360&&h===640))s+=2;' .
+                    'if(navigator.plugins&&navigator.plugins.length===0)s+=1;' .
+                    'if(!navigator.connection&&!navigator.deviceMemory&&!navigator.hardwareConcurrency)s+=1;' .
+                    'if(typeof navigator.permissions===\'undefined\')s+=1;' .
+                    'if(/Chrome/i.test(ua)&&typeof window.chrome===\'undefined\')s+=2;' .
+                    'window.pagespeed=s>=4;})();</script>';
             },
             -9999
         );
