@@ -3,6 +3,10 @@
     "require": {
         "vielhuber/stringhelper": "*"
     },
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "*",
+        "php-stubs/wordpress-globals": "*"
+    },
     "autoload": {
         "psr-4": {
             "WP\\": "_php/"

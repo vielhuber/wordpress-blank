@@ -700,42 +700,36 @@ $rand
 
     private function loadCssAdvanced()
     {
-        // split in critical/non-critical
-        // load css (critical)
+        // inline css in head: critical-only on production, full bundle in dev to avoid fouc while iterating
         add_action('wp_head', function () {
-            if (file_exists(get_template_directory() . '/_build/bundle-critical.css') && self::isProduction()) {
-                echo '<style>';
-                $stylesheet = file_get_contents(get_template_directory() . '/_build/bundle-critical.css');
-                // replace relative paths
-                $stylesheet = str_replace(
-                    'url("../_',
-                    'url("' . get_bloginfo('template_directory') . '/_',
-                    $stylesheet
-                );
-                $stylesheet = str_replace(
-                    'url(\'../_',
-                    'url(\'' . get_bloginfo('template_directory') . '/_',
-                    $stylesheet
-                );
-                $stylesheet = str_replace('url(../_', 'url(' . get_bloginfo('template_directory') . '/_', $stylesheet);
-                echo $stylesheet;
-                echo '</style>';
+            $useCritical = self::isProduction() && file_exists(get_template_directory() . '/_build/bundle-critical.css');
+            $path = get_template_directory() . ($useCritical ? '/_build/bundle-critical.css' : '/_build/bundle.css');
+            if (!file_exists($path)) {
+                return;
             }
+            echo '<style>';
+            $stylesheet = file_get_contents($path);
+            // resolve relative asset paths against the theme dir
+            $stylesheet = str_replace('url("../_', 'url("' . get_bloginfo('template_directory') . '/_', $stylesheet);
+            $stylesheet = str_replace('url(\'../_', 'url(\'' . get_bloginfo('template_directory') . '/_', $stylesheet);
+            $stylesheet = str_replace('url(../_', 'url(' . get_bloginfo('template_directory') . '/_', $stylesheet);
+            // tailwind invalid variables fix (https://github.com/tailwindlabs/tailwindcss/issues/7121)
+            $stylesheet = str_replace(' ;--tw', 'var(--tw-empty,/*!*/ /*!*/);--tw', $stylesheet);
+            $stylesheet = preg_replace('/(;--tw-.+?:)( )(})/', '$1var(--tw-empty,/*!*/ /*!*/);$3', $stylesheet);
+            echo $stylesheet;
+            echo '</style>';
         });
-        // load css (non-critical)
+        // async-load full bundle.css on production (dev already has it inlined above)
         add_action('wp_footer', function () {
-            // https://github.com/filamentgroup/loadCSS
+            if (!self::isProduction() || !file_exists(get_template_directory() . '/_build/bundle-critical.css')) {
+                return;
+            }
             echo '<link rel="preload" href="' .
                 get_bloginfo('template_directory') .
-                '/_build/bundle.css' .
-                (!self::isProduction() ? '?ver=' . mt_rand(1000, 9999) : '') .
-                '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
+                '/_build/bundle.css" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
             echo '<noscript><link rel="stylesheet" href="' .
                 get_bloginfo('template_directory') .
                 '/_build/bundle.css"></noscript>';
-            echo '<script>';
-            echo '(function(a){"use strict";a.loadCSS||(a.loadCSS=function(){});var b=loadCSS.relpreload={};if(b.support=function(){var d;try{d=a.document.createElement("link").relList.supports("preload")}catch(f){d=!1}return function(){return d}}(),b.bindMediaToggle=function(d){function f(){d.media=g}var g=d.media||"all";d.addEventListener?d.addEventListener("load",f):d.attachEvent&&d.attachEvent("onload",f),setTimeout(function(){d.rel="stylesheet",d.media="only x"}),setTimeout(f,3e3)},b.poly=function(){if(!b.support())for(var g,d=a.document.getElementsByTagName("link"),f=0;f<d.length;f++)g=d[f],"preload"!==g.rel||"style"!==g.getAttribute("as")||g.getAttribute("data-loadcss")||(g.setAttribute("data-loadcss",!0),b.bindMediaToggle(g))},!b.support()){b.poly();var c=a.setInterval(b.poly,500);a.addEventListener?a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}):a.attachEvent&&a.attachEvent("onload",function(){b.poly(),a.clearInterval(c)})}"undefined"==typeof exports?a.loadCSS=loadCSS:exports.loadCSS=loadCSS})("undefined"==typeof global?this:global);';
-            echo '</script>';
         });
     }
 
