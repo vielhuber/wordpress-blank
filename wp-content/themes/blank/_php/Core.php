@@ -224,7 +224,7 @@ $rand
         add_action(
             'wp_head',
             function () {
-                echo '<script>window.pagespeed = navigator.userAgent.indexOf(\'Speed Insights\') > -1 || navigator.userAgent.indexOf(\'Chrome-Lighthouse\') > -1;</script>';
+                echo '<script>window.pagespeed = /Lighthouse|HeadlessChrome|Chrome-Lighthouse|Speed Insights|PTST|PageSpeed/i.test(navigator.userAgent || \'\') || !!navigator.webdriver;</script>';
             },
             -9999
         );
