@@ -713,6 +713,9 @@ $rand
             $stylesheet = str_replace('url("../_', 'url("' . get_bloginfo('template_directory') . '/_', $stylesheet);
             $stylesheet = str_replace('url(\'../_', 'url(\'' . get_bloginfo('template_directory') . '/_', $stylesheet);
             $stylesheet = str_replace('url(../_', 'url(' . get_bloginfo('template_directory') . '/_', $stylesheet);
+            // strip any host baked into wp-* urls during local critical-css generation (avoids cross-origin /
+            // local-network-access prompt when prod html references the dev hostname)
+            $stylesheet = preg_replace('#https?://[^/\s"\')]+/wp-#i', '/wp-', $stylesheet);
             // tailwind invalid variables fix (https://github.com/tailwindlabs/tailwindcss/issues/7121)
             $stylesheet = str_replace(' ;--tw', 'var(--tw-empty,/*!*/ /*!*/);--tw', $stylesheet);
             $stylesheet = preg_replace('/(;--tw-.+?:)( )(})/', '$1var(--tw-empty,/*!*/ /*!*/);$3', $stylesheet);
