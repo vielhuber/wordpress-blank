@@ -30,32 +30,19 @@ RewriteRule ^(.*)$ wp-content/themes/blank/pagespeed.php?path=$1 [L,QSA]
     RewriteRule "(^|\/)vendor\/" - [F]
 </IfModule>
 
-# password on testing
+# Password protection for testing.
 <IfModule !mod_win32.c>
-<If "%{REQUEST_METHOD} != 'OPTIONS'">
-SetEnvIf HOST "testing-tld\.de" protected
-#SetEnvIf Request_URI "wp-json" !protected
-# allow wordfence
-SetEnvIf Remote_Addr "^44\.239\.130\.172$" !protected
-SetEnvIf Remote_Addr "^44\.238\.191\.15$" !protected
-SetEnvIf Remote_Addr "^35\.155\.126\.231$" !protected
-SetEnvIf Remote_Addr "^54\.68\.32\.247$" !protected
-SetEnvIf Remote_Addr "^44\.235\.211\.232$" !protected
-SetEnvIf Remote_Addr "^54\.71\.203\.174$" !protected
-<If "%{THE_REQUEST} =~ m#wp-json#">
-SetEnvIf Request_URI ".*" !protected
-</If>
-SetEnvIf Cookie "access_token" !protected
-Order Allow,Deny
 AuthType Basic
 AuthName "Interner Bereich"
-AuthUserFile /www/htdocs/xxxxxxxx/xxx.testing-tld.de/.htpasswd
-AuthGroupFile /dev/null
-require valid-user
-Allow from all
-Deny from env=protected
-Satisfy any
-</If>
+AuthUserFile /www/htdocs/xxxxxxxx/xxx.rebuhleiv.xyz/.htpasswd
+<RequireAny>
+    Require method OPTIONS
+    Require expr "%{HTTP_HOST} !~ /rebuhleiv\.xyz/"
+    Require expr "%{THE_REQUEST} =~ /wp-json/"
+    Require expr "%{HTTP_COOKIE} =~ /access_token/"
+    Require ip 44.239.130.172 44.238.191.15 35.155.126.231 54.68.32.247 44.235.211.232 54.71.203.174
+    Require valid-user
+</RequireAny>
 </IfModule>
 
 # increase limits via .htaccess (this only works when PHP is not running in CGI mode)

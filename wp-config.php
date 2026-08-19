@@ -35,7 +35,7 @@ elseif( @$_SERVER['SERVER_ADMIN'] === '%MAIL_USER_3%' )
     define('DIEONDBERROR', true);
     define('DISABLE_WP_CRON', true);
 }
-elseif( strpos(@$_SERVER['HTTP_HOST'], 'close2dev') !== false )
+elseif( strpos($_SERVER['HTTP_HOST'] ?? '', 'rebuhleiv.xyz') !== false )
 {
     define('DB_NAME', '%DB_NAME_TESTING%');
     define('DB_USER', '%DB_USER_TESTING%');
