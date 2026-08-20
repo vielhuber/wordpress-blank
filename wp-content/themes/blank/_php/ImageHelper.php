@@ -26,7 +26,7 @@ namespace WP;
  *     echo: false
  * );
  *
- * @author David Vielhuber <david@close2.de>
+ * @author David Vielhuber <david@vielhuber.de>
  * @version 1.0.5
  */
 

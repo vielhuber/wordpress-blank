@@ -355,7 +355,7 @@ $rand
                     strpos($_SERVER['SERVER_ADMIN'], '@') !== false &&
                     strpos($_SERVER['SERVER_ADMIN'], 'webmaster@') === false
                         ? $_SERVER['SERVER_ADMIN']
-                        : 'support@close2.de';
+                        : 'david@vielhuber.de';
                 return $data;
             });
         }
